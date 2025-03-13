@@ -1,20 +1,17 @@
+// lib/schemas.ts
 import { z } from "zod";
 
+// Flashcard schema: each flashcard contains a term and a definition.
+export const flashcardSchema = z.object({
+  term: z.string(),
+  definition: z.string(),
+});
+export const flashcardsSchema = z.array(flashcardSchema);
+
+// Question schema: each test question has a question, 4 options, and the correct answer.
 export const questionSchema = z.object({
   question: z.string(),
-  options: z
-    .array(z.string())
-    .length(4)
-    .describe(
-      "Four possible answers to the question. Only one should be correct. They should all be of equal lengths.",
-    ),
-  answer: z
-    .enum(["A", "B", "C", "D"])
-    .describe(
-      "The correct answer, where A is the first option, B is the second, and so on.",
-    ),
+  options: z.array(z.string()).length(4),
+  correctAnswer: z.string(),
 });
-
-export type Question = z.infer<typeof questionSchema>;
-
-export const questionsSchema = z.array(questionSchema).length(4);
+export const questionsSchema = z.array(questionSchema);
